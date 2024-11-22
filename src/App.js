@@ -3,7 +3,7 @@ import './App.css';
 import VideoCard from './components/VideoCard';
 import BottomNavbar from './components/BottomNavbar';
 import TopNavbar from './components/TopNavbar';
-
+import FooterRight from './components/FooterRight';
 // This array holds information about different videos
 const videoUrls = [
   {
@@ -54,6 +54,7 @@ const videoUrls = [
 
 function App() {
   const [videos, setVideos] = useState([]);
+  const [isUserInteracted, setIsUserInteracted] = useState(false); // Theo dõi tương tác người dùng
   const videoRefs = useRef([]);
 
   useEffect(() => {
@@ -64,15 +65,16 @@ function App() {
     const observerOptions = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.8, // Adjust this value to change the scroll trigger point
+      threshold: 0.8,
     };
 
-    // This function handles the intersection of videos
     const handleIntersection = (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && isUserInteracted) {
           const videoElement = entry.target;
-          videoElement.play();
+          videoElement.play().catch((error) => {
+            console.error("Video playback failed:", error);
+          });
         } else {
           const videoElement = entry.target;
           videoElement.pause();
@@ -82,27 +84,28 @@ function App() {
 
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
-    // We observe each video reference to trigger play/pause
     videoRefs.current.forEach((videoRef) => {
       observer.observe(videoRef);
     });
 
-    // We disconnect the observer when the component is unmounted
     return () => {
       observer.disconnect();
     };
-  }, [videos]);
+  }, [videos, isUserInteracted]);
 
-  // This function handles the reference of each video
   const handleVideoRef = (index) => (ref) => {
     videoRefs.current[index] = ref;
   };
 
+  // Xử lý tương tác người dùng
+  const handleUserInteraction = () => {
+    setIsUserInteracted(true);
+  };
+
   return (
-    <div className="app">
+    <div className="app" onClick={handleUserInteraction}>
       <div className="container">
         <TopNavbar className="top-navbar" />
-        {/* Here we map over the videos array and create VideoCard components */}
         {videos.map((video, index) => (
           <VideoCard
             key={index}
@@ -123,7 +126,10 @@ function App() {
       </div>
     </div>
   );
-  
 }
 
+
 export default App;
+
+  
+
