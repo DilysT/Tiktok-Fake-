@@ -4,6 +4,63 @@
   margin-right: 5px;
   margin-bottom: 25px;
 }
+/*share popup*/
+.share-popup {
+  position: absolute;
+  bottom: 180px; /* Khoảng cách từ nút Share */
+  right: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.share-popup-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.close-popup {
+  cursor: pointer;
+  color: #555;
+  font-size: 18px;
+}
+
+.share-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.share-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.share-option:hover {
+  background-color: #b1b0b0;
+}
+
+.share-icon {
+  font-size: 16px;
+  color: #555;
+}
+
+
+/*end share popup*/
+
 
 .sidebar-icon {
   display: flex;
@@ -12,6 +69,7 @@
   align-items: center;
   text-align: center;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .sidebar-icon .userprofile {

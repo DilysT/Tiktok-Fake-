@@ -4,7 +4,7 @@ import VideoCard from './components/VideoCard';
 import BottomNavbar from './components/BottomNavbar';
 import TopNavbar from './components/TopNavbar';
 import FooterRight from './components/FooterRight';
-// This array holds information about different videos
+
 const videoUrls = [
   {
     url: require('./videos/video1.mp4'),
@@ -54,7 +54,9 @@ const videoUrls = [
 
 function App() {
   const [videos, setVideos] = useState([]);
-  const [isUserInteracted, setIsUserInteracted] = useState(false); // Theo dõi tương tác người dùng
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0); // Track current video index
+  const [isUserInteracted, setIsUserInteracted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');  // State for search query
   const videoRefs = useRef([]);
 
   useEffect(() => {
@@ -97,16 +99,36 @@ function App() {
     videoRefs.current[index] = ref;
   };
 
-  // Xử lý tương tác người dùng
   const handleUserInteraction = () => {
     setIsUserInteracted(true);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearch = (searchTerm) => {
+    setSearchQuery(searchTerm);
+  };
+
+  // Filter videos based on the search query
+  const filteredVideos = videos.filter((video) =>
+    video.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    video.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="app" onClick={handleUserInteraction}>
       <div className="container">
-        <TopNavbar className="top-navbar" />
-        {videos.map((video, index) => (
+        <TopNavbar onSearch={handleSearch} className="top-navbar" />
+        <input
+          type="text"
+          placeholder="Search videos..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="search-bar"
+        />
+        {filteredVideos.map((video, index) => (
           <VideoCard
             key={index}
             username={video.username}
@@ -119,7 +141,8 @@ function App() {
             url={video.url}
             profilePic={video.profilePic}
             setVideoRef={handleVideoRef(index)}
-            autoplay={index === 0}
+            autoplay={index === currentVideoIndex} // Only autoplay the current video
+            onVideoClick={() => setCurrentVideoIndex(index)} // Update current video on click
           />
         ))}
         <BottomNavbar className="bottom-navbar" />
@@ -128,8 +151,4 @@ function App() {
   );
 }
 
-
 export default App;
-
-  
-

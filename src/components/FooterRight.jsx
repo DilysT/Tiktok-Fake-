@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus, faCircleCheck, faHeart, faCommentDots, faBookmark, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faCircleCheck, faHeart, faCommentDots, faBookmark, faShare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagram, faThreads } from '@fortawesome/free-brands-svg-icons';
 import './FooterRight.css';
 
 function FooterRight({ likes, comments, saves, shares, profilePic }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [isSharePopupVisible, setIsSharePopupVisible] = useState(false);
   const [userAddIcon, setUserAddIcon] = useState(faCirclePlus);
 
   const handleUserAddClick = () => {
@@ -34,6 +36,14 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
 
   const handleLikeClick = () => {
     setLiked((prevLiked) => !prevLiked);
+  };
+
+  const handleShareClick = () => {
+    setIsSharePopupVisible(true);
+  };
+
+  const closeSharePopup = () => {
+    setIsSharePopupVisible(false);
   };
 
   return (
@@ -65,14 +75,36 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
       </div>
 
       <div className="sidebar-icon">
-        <FontAwesomeIcon icon={faShare} style={{ width: '35px', height: '35px', color: 'white' }} />
+        <FontAwesomeIcon icon={faShare} style={{ width: '35px', height: '35px', color: 'white' }} onClick={handleShareClick} />
         <p>{shares}</p>
       </div>
+
+      {/* Share Popup */}
+      {isSharePopupVisible && (
+        <div className="share-popup">
+          <div className="share-popup-header">
+            <FontAwesomeIcon icon={faTimes} className="close-popup" onClick={closeSharePopup} />
+          </div>
+          <div className="share-options">
+            <button className="share-option">
+              <FontAwesomeIcon icon={faFacebook} className="share-icon" />
+              Facebook
+            </button>
+            <button className="share-option">
+              <FontAwesomeIcon icon={faInstagram} className="share-icon" />
+              Instagram
+            </button>
+            <button className="share-option">
+              <FontAwesomeIcon icon={faThreads} className="share-icon" />
+              Thread
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="sidebar-icon record">
         <img src="https://static.thenounproject.com/png/934821-200.png" alt="Record Icon" />
       </div>
-      
     </div>
   );
 }
