@@ -4,7 +4,7 @@ import { faCirclePlus, faCircleCheck, faHeart, faCommentDots, faBookmark, faShar
 import { faFacebook, faInstagram, faThreads } from '@fortawesome/free-brands-svg-icons';
 import './FooterRight.css';
 
-function FooterRight({ likes, comments, saves, shares, profilePic }) {
+function FooterRight({ likes, comments, saves, shares, profilePic, videoUrl }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [isSharePopupVisible, setIsSharePopupVisible] = useState(false);
@@ -38,7 +38,19 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
     setLiked((prevLiked) => !prevLiked);
   };
 
-  const handleShareClick = () => {
+  const handleSaveClick = () => {//create function to copy video url to clipboard
+    setSaved((prevSaved) => !prevSaved);
+    if (videoUrl) {
+      navigator.clipboard.writeText(videoUrl)
+        .then(() => alert(`URL copied: ${videoUrl}`))
+        .catch((err) => console.error('Failed to copy URL:', err));
+    } else {
+      console.error('Video URL is undefined');
+    }
+  };
+  
+
+  const handleShareClick = () => {// create function to show share popup
     setIsSharePopupVisible(true);
   };
 
@@ -66,11 +78,11 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
       </div>
 
       <div className="sidebar-icon">
-        {saved ? (
-          <FontAwesomeIcon icon={faBookmark} style={{ width: '35px', height: '35px', color: '#ffc107' }} onClick={() => setSaved(false)} />
-        ) : (
-          <FontAwesomeIcon icon={faBookmark} style={{ width: '35px', height: '35px', color: 'white' }} onClick={() => setSaved(true)} />
-        )}
+        <FontAwesomeIcon
+          icon={faBookmark}
+          style={{ width: '35px', height: '35px', color: saved ? '#ffc107' : 'white' }}
+          onClick={handleSaveClick}
+        />
         <p>{saved ? saves + 1 : saves}</p>
       </div>
 
@@ -79,7 +91,6 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
         <p>{shares}</p>
       </div>
 
-      {/* Share Popup */}
       {isSharePopupVisible && (
         <div className="share-popup">
           <div className="share-popup-header">
@@ -101,10 +112,6 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
           </div>
         </div>
       )}
-
-      <div className="sidebar-icon record">
-        <img src="https://static.thenounproject.com/png/934821-200.png" alt="Record Icon" />
-      </div>
     </div>
   );
 }
