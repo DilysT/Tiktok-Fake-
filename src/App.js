@@ -4,7 +4,7 @@ import VideoCard from './components/VideoCard';
 import BottomNavbar from './components/BottomNavbar';
 import TopNavbar from './components/TopNavbar';
 import FooterRight from './components/FooterRight';
-const baseUrl = 'http://localhost:3000'; // Define the base URL for the video files
+const baseUrl = window.location.origin; // Tự động nhận môi trường hiện tại
 const videoUrls = [
   {
     url: `${baseUrl}/videos/video1.mp4`,//thêm baseUrl vào đường dẫn video
