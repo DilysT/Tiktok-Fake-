@@ -30,19 +30,19 @@ const VideoCard = (props) => {
 
   return (
     <div className="video">
-    <video
-  className="player"
-  onClick={() => {
-    onVideoPress();
-    props.onVideoClick(); // Gọi hàm cập nhật video index
-  }}
-  ref={(ref) => {
-    videoRef.current = ref;
-    setVideoRef(ref);
-  }}
-  loop
-  src={url}
-></video>
+      <video
+        className="player"
+        onClick={() => {
+          onVideoPress();
+          props.onVideoClick(); // Gọi hàm cập nhật video index
+        }}
+        ref={(ref) => {
+          videoRef.current = ref;
+          setVideoRef(ref);
+        }}
+        loop
+        src={url}
+      ></video>
       <div className="bottom-controls">
         <div className="footer-left">
           <FooterLeft username={username} description={description} song={song} />
@@ -53,8 +53,9 @@ const VideoCard = (props) => {
             comments={comments}
             saves={saves}
             shares={shares}
-            profilePic={profilePic}
+            profilePic={'https://i.pravatar.cc/150?img=3'}
             videoUrl={url} // Pass the video URL to FooterRight
+            videoRef={videoRef}
           />
         </div>
       </div>
